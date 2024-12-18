@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whac-a-Mole</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #333;
+        }
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(3, 150px);
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .hole {
+            width: 150px;
+            height: 150px;
+            background-color: #c0c0c0;
+            border: 2px solid #8c8c8c;
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+        .mole {
+            width: 80px;
+            height: 80px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            position: absolute;
+            top: 35px;
+            left: 35px;
+        }
+        #score-board {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        #start-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #start-button:hover {
+            background-color: #45a049;
+        }
+        #game-over {
+            font-size: 24px;
+            color: red;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Whac-a-Mole Game</h1>
+    <button id="start-button">Start Game</button>
+    <div id="score-board">Score: <span id="score">0</span></div>
+    <div class="game-container">
+        <div class="hole" data-index="0"></div>
+        <div class="hole" data-index="1"></div>
+        <div class="hole" data-index="2"></div>
+        <div class="hole" data-index="3"></div>
+        <div class="hole" data-index="4"></div>
+        <div class="hole" data-index="5"></div>
+        <div class="hole" data-index="6"></div>
+        <div class="hole" data-index="7"></div>
+        <div class="hole" data-index="8"></div>
+    </div>
+    <div id="game-over">Game Over! Your final score is <span id="final-score">0</span>.</div>
+
+    <script>
+        const holes = document.querySelectorAll('.hole');
+        const scoreBoard = document.getElementById('score');
+        const startButton = document.getElementById('start-button');
+        const gameOverMessage = document.getElementById('game-over');
+        const finalScore = document.getElementById('final-score');
+        let score = 0;
+        let lastHole;
+        let timeUp = false;
+
+        function randomTime(min, max) {
+            return Math.round(Math.random() * (max - min) + min);
+        }
+
+        function randomHole(holes) {
+            const index = Math.floor(Math.random() * holes.length);
+            const hole = holes[index];
+            if (hole === lastHole) {
+                return randomHole(holes);
+            }
+            lastHole = hole;
+            return hole;
+        }
+
+        function showMole() {
+            const time = randomTime(500, 1200); // Mole appears for 500-1200ms
+            const hole = randomHole(holes);
+            const mole = document.createElement('div');
+            mole.classList.add('mole');
+            hole.appendChild(mole);
+
+            mole.addEventListener('click', () => {
+                score++;
+                scoreBoard.textContent = score;
+            });
+
+            setTimeout(() => {
+                if (hole.contains(mole)) {
+                    hole.removeChild(mole);
+                }
+                if (!timeUp) showMole();
+            }, time);
+        }
+
+        function startGame() {
+            score = 0;
+            scoreBoard.textContent = score;
+            timeUp = false;
+            gameOverMessage.style.display = 'none';
+            startButton.disabled = true;
+            showMole();
+            setTimeout(() => {
+                timeUp = true;
+                startButton.disabled = false;
+                showGameOver();
+            }, 20000); // Game lasts 20 seconds
+        }
+
+        function showGameOver() {
+            finalScore.textContent = score;
+            gameOverMessage.style.display = 'block';
+        }
+
+        startButton.addEventListener('click', startGame);
+    </script>
+</body>
+</html>
+

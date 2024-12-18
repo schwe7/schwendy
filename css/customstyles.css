@@ -1,0 +1,35 @@
+h1{
+    color:deeppink; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center;
+}
+
+
+    
+h3 { font-style: italic; font-weight: 100;
+}
+
+
+
+h5{ font-family: Verdana, Geneva, Tahoma, sans-serif; color:teal
+
+}
+
+h6{ font-style: italic; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; color: cornflowerblue;
+
+}
+
+.header {
+    background-color:aliceblue;
+    margin: auto;
+    text-align: center;
+}
+
+.main{
+text-align: center;
+margin: auto;
+}
+
+
+.footer{
+    text-align: left; color: cadetblue; font-weight: bold;
+}
+
